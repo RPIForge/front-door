@@ -1,0 +1,9 @@
+DateTime==4.3
+google-api-python-client==1.7.11
+google-auth==1.6.3
+google-auth-httplib2==0.0.3
+google-auth-oauthlib==0.4.0
+requests==2.22.0
+requests-oauthlib==1.2.0
+RPi.GPIO==0.7.0
+slackclient==2.1.0
