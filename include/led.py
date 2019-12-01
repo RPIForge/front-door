@@ -57,7 +57,7 @@ class led:
 
     ############################## COLOR METHODS ##############################        
     def set_color(self, color, bump=False):
-        if(not bump):
+        if(not bump and self.continue_bump==True):
             self.logger.info("Stopping Bump")
             self.continue_bump=False
             

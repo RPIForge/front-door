@@ -81,11 +81,7 @@ def get_message(**payload):
     #have slack bot handle message
     slack_app.handle_message(data)
 
-while(True):
-    try:
-        #start slack rtm client
-        logger.info("starting rtm service")
-        rtm_client = slack.RTMClient(token=slack_token,auto_reconnect=True)
-        rtm_client.start()  
-    except Exception as exc:
-        logger.error(exc, exc_info=True)
+#start slack rtm client
+logger.info("starting rtm service")
+rtm_client = slack.RTMClient(token=slack_token,auto_reconnect=True)
+rtm_client.start()  

@@ -34,8 +34,47 @@ class calendar:
                 
             self.calendar_id = result['items'][result_element]['id']
             print("finished initalization")    
-    
-    
+   
+    ##################### GET EVENT FUNCTIONS ###################################### 
+    def handle_event(self,event_dict):
+        #if event is not all day
+        if('dateTime' in event_dict['start']):
+            output_dict = {
+                'start':datetime.datetime.fromisoformat(event_dict['start']['dateTime']).replace(tzinfo=None),
+                'end':datetime.datetime.fromisoformat(event_dict['end']['dateTime']).replace(tzinfo=None)
+            }
+        else:
+            output_dict = {
+                'start':  datetime.datetime.strptime(event_dict['start']['date'],'%Y-%m-%d'),
+                'end': datetime.datetime.strptime(event_dict['start']['date'],'%Y-%m-%d')
+            }
+        #get event description
+        output_dict['description'] = event_dict['summary']
+        return [output_dict]
+
+
+
+    def list_events(self, query='',time_min=datetime.datetime.min,time_max=datetime.datetime.max):
+        #handle objects that are not the right type 
+        if(not isinstance(time_min, datetime.datetime) and time_min):
+            raise ValueError("Invalid Paramaters: must be datetime objects")
+        if(not isinstance(time_max, datetime.datetime) and time_max):
+            raise ValueError("Invalid Paramaters: must be datetime objects")
+
+        #set time to string 
+        time_min_str = time_min.isoformat("T") + "Z"
+        time_max_str = time_max.isoformat("T") + "Z"
+
+        #get the events
+        event_list = self.calendar_service.events().list(calendarId=self.calendar_id, q=query, singleEvents = True, showDeleted=False, timeMax = time_max_str, timeMin = time_min_str).execute()
+
+        #loop through and put events in an easier format
+        current_event_list = []
+        for event in event_list['items']:
+            current_event_list.extend(self.handle_event(event))
+
+        return current_event_list
+
     
     
     
@@ -44,38 +83,15 @@ class calendar:
     
     
     ####################### SET EVENT FUNCTIONS #####################################
-    def get_user_events(self, user):
-        upcoming_events = self.calendar_service.events().list(calendarId=self.calendar_id,timeMin=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")).execute()
-        matching_events=[]
-        for event in upcoming_events['items']:
-            if(event['status']=='cancelled'):
-                continue  
-            if(str(event['summary']).lower()==user):
-                if ('recurrence' in event):
-                    recurring_events_list = self.calendar_service.events().instances(calendarId=self.calendar_id,eventId=event['id'],showDeleted=True, timeMin=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")).execute()
-                    
-                    for recurring_event in recurring_events_list['items']:
-                        if(recurring_event['status']=='cancelled'):
-                            continue  
-                        if(str(recurring_event['summary']).lower()==user):
-                            matching_events.append(recurring_event)
-                else:
-                    matching_events.append(event)
-        
-        return matching_events
-    
     def get_next_user_event(self, user):
-        user_events = self.get_user_events(user)
+        user_events = self.list_events(user,datetime.datetime.now(),datetime.datetime.max)
         current_time = datetime.datetime.now()
-        next_event={'event':{},'start_time':datetime.datetime(2040,1,1)}
+        next_event={'event':{},'start':datetime.datetime.max,'end':datetime.datetime.min}
+        
         for event in user_events:
-            if 'dateTime' in event['start']:
-                event_time = datetime.datetime.strptime(event['start']['dateTime'][:16],'%Y-%m-%dT%H:%M')
-                                
-                if(current_time <= event_time <= next_event['start_time']):
-                    next_event['event']=event
-                    next_event['start_time']=event_time
-        return next_event['event']
+            if(current_time <= event['start'] <= next_event['start']):
+                next_event =event
+        return next_event
         
     
     ###################### GET CURRENT EVENT FUNCTIONS ############################### 

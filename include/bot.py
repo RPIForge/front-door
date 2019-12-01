@@ -176,10 +176,9 @@ class door_bot:
         self.update_calendar.running = True
         next_event = self.update_calendar.get_next_user_event(user_info)
         self.update_calendar.running = False
-        print(next_event)
-        
-        start_time = datetime.datetime.strptime(next_event['start']['dateTime'][:16],'%Y-%m-%dT%H:%M')
-        end_time = datetime.datetime.strptime(next_event['end']['dateTime'][:16],'%Y-%m-%dT%H:%M')
+        print(next_event) 
+        start_time = next_event['start']
+        end_time = next_event['end']
         
         self.slack_send_message(channel,"@"+str(user)+" your next hours are on "+start_time.strftime("%m-%d-%Y")+" from "+ start_time.strftime("%H:%M")+" to "+end_time.strftime("%H:%M"))
         
