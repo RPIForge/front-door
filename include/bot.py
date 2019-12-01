@@ -197,17 +197,17 @@ class door_bot:
         if(current_events!=[]):
             
             if(len(current_events) == 1):
-                self.slack_send_message(channel,"@"+str(user)+" "+str(current_events[0]['name'])+" is the current volunteer on duty")
+                self.slack_send_message(channel,"@"+str(user)+" "+str(current_events[0]['description'])+" is the current volunteer on duty")
             else:
-                output_names = current_events[0]['name']
+                output_names = current_events[0]['description']
                 for number in range(len(current_events)):
                     if(number == 0):
                         continue
                         
                     if(number == len(current_events)-1):
-                        output_names = output_names + ', and ' + str(current_events[number]['name'])
+                        output_names = output_names + ', and ' + str(current_events[number]['description'])
                     else:
-                        output_names = output_names + ', ' + str(current_events[number]['name'])
+                        output_names = output_names + ', ' + str(current_events[number]['description'])
                 
                 self.slack_send_message(channel,"@"+str(user)+" the current volunteers on duty are: "+output_names)   
 
