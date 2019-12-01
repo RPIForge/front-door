@@ -176,10 +176,9 @@ class door_bot:
         self.update_calendar.running = True
         next_event = self.update_calendar.get_next_user_event(user_info)
         self.update_calendar.running = False
-        print(next_event)
-        
-        start_time = datetime.datetime.strptime(next_event['start']['dateTime'][:16],'%Y-%m-%dT%H:%M')
-        end_time = datetime.datetime.strptime(next_event['end']['dateTime'][:16],'%Y-%m-%dT%H:%M')
+        print(next_event) 
+        start_time = next_event['start']
+        end_time = next_event['end']
         
         self.slack_send_message(channel,"@"+str(user)+" your next hours are on "+start_time.strftime("%m-%d-%Y")+" from "+ start_time.strftime("%H:%M")+" to "+end_time.strftime("%H:%M"))
         
@@ -198,17 +197,17 @@ class door_bot:
         if(current_events!=[]):
             
             if(len(current_events) == 1):
-                self.slack_send_message(channel,"@"+str(user)+" "+str(current_events[0]['name'])+" is the current volunteer on duty")
+                self.slack_send_message(channel,"@"+str(user)+" "+str(current_events[0]['description'])+" is the current volunteer on duty")
             else:
-                output_names = current_events[0]['name']
+                output_names = current_events[0]['description']
                 for number in range(len(current_events)):
                     if(number == 0):
                         continue
                         
                     if(number == len(current_events)-1):
-                        output_names = output_names + ', and ' + str(current_events[number]['name'])
+                        output_names = output_names + ', and ' + str(current_events[number]['description'])
                     else:
-                        output_names = output_names + ', ' + str(current_events[number]['name'])
+                        output_names = output_names + ', ' + str(current_events[number]['description'])
                 
                 self.slack_send_message(channel,"@"+str(user)+" the current volunteers on duty are: "+output_names)   
 
