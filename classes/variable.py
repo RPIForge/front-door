@@ -1,0 +1,2 @@
+class variable():
+    calendar = None
