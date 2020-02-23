@@ -110,5 +110,3 @@ class google_calendar():
 
         #return event times
         return output_events
-
-    
