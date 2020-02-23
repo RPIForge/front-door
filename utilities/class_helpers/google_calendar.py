@@ -1,6 +1,7 @@
 #google calendar imports
 from googleapiclient.discovery import build
 from datetime import datetime, timedelta
+import os
 
 #
 # CALENDAR FUNCTIONS
@@ -9,6 +10,7 @@ class google_calendar():
     calendar_service = None
     calendar_id = None
 
+    #initialize calendar with api key
     def __init__(self):
         api_key = os.getenv('GOOGLE_API_KEY')
         if(not api_key):
@@ -20,11 +22,13 @@ class google_calendar():
         self.calendar_id = "k2r6osjjms6lqt41bi5a7j48n0@group.calendar.google.com"
         if(not self.calendar_id):
             raise ValueError("No CALENDAR_ID enviromental variable")
-    #handle events
+
+
+    #format recurrence event
     def recurrence_time(self,calendar_time):
         return datetime.strptime(calendar_time[:8],'%Y%m%d')
 
-
+    #read in google data and format
     def handle_event(self,event_dict):
         #if event is not all day
         if('dateTime' in event_dict['start']):
@@ -42,7 +46,7 @@ class google_calendar():
         return [output_dict]
 
 
-
+    #list events going on
     def list_events(self, time_min=datetime.min,time_max=datetime.max):
         #handle objects that are not the right type
         if(not isinstance(time_min, datetime)):

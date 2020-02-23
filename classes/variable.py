@@ -6,6 +6,10 @@ class variable():
 
     #thread classes
     calendar_class = None
+    slack_class = None
+
+    #mode variable
+    calendar_mode = "calendar"
 
     def __init__(self):
         pass

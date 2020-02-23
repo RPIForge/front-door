@@ -3,7 +3,6 @@ import threading
 import time
 import logging
 
-import RPi.GPIO as GPIO
 
 class led:
     #pin variables
@@ -14,10 +13,6 @@ class led:
     #color variables
     current_color = 'OFF'
     color_list = ['RED','GREEN','BLUE','CYAN','YELLOW','PURPLE','WHITE', 'OFF']
-
-    #effect variables
-    continue_bump = None
-    bump_thread = None
 
     #variable object and logger
     variable_object = None
@@ -41,7 +36,7 @@ class led:
         self.mode = mode_input
         self.logger = self.variable_object.logger_class.logger
 
-        if(mode_input != "DEBUG"):
+        if(mode_input == "LIVE"):
             import RPi.GPIO as GPIO
 
             GPIO.setmode(GPIO.BOARD)
@@ -53,7 +48,7 @@ class led:
     def set_pin(self,pin,state):
         state = state.upper()
         if((pin != self.red_pin) and (pin != self.green_pin) and (pin != self.blue_pin)):
-            return
+            return False
 
         if(mode_input != "DEBUG"):
             if(state=='HIGH'):
@@ -61,15 +56,12 @@ class led:
             elif(state=='LOW'):
                 GPIO.output(pin, GPIO.LOW)
             else:
-                return
+                return False
 
+        return True
 
     ############################## COLOR METHODS ##############################
     def set_color(self, color, bump=False):
-        if(not bump and self.continue_bump==True):
-            self.logger.info("Stopping Bump")
-            self.continue_bump=False
-
         if(color==self.current_color):
             return self.current_color
 
@@ -130,17 +122,3 @@ class led:
         self.set_color('BLUE')
         time.sleep(0.5)
         self.set_color('OFF')
-
-    def next_color(self):
-        index = self.color_list.index(self.current_color)
-
-
-        #if off then go to calendar
-        if(index == (len(self.color_list)-1)):
-            self.set_color("RED")
-
-        #loop through list
-        else:
-            self.set_color(self.color_list[index+1])
-
-        return self.current_color
