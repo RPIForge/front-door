@@ -36,21 +36,21 @@ class led:
         self.mode = mode_input
         self.logger = self.variable_object.logger_class.logger
 
-        if(mode_input == "LIVE"):
+        if(self.mode == "LIVE"):
             import RPi.GPIO as GPIO
 
             GPIO.setmode(GPIO.BOARD)
             GPIO.setup(self.red_pin, GPIO.OUT)
             GPIO.setup(self.green_pin, GPIO.OUT)
             GPIO.setup(self.blue_pin, GPIO.OUT)
-
+        self.logger.info("Initialized LED strip in {} mode".format(self.mode))
     #pin setup
     def set_pin(self,pin,state):
         state = state.upper()
         if((pin != self.red_pin) and (pin != self.green_pin) and (pin != self.blue_pin)):
             return False
 
-        if(mode_input != "DEBUG"):
+        if(self.mode != "DEBUG"):
             if(state=='HIGH'):
                 GPIO.output(pin, GPIO.HIGH)
             elif(state=='LOW'):
@@ -103,7 +103,7 @@ class led:
             self.set_pin(self.green_pin,'LOW')
             self.set_pin(self.blue_pin,'LOW')
         else:
-            raise Exception("Not a color")
+            raise ValueError("Not a color")
 
         self.current_color=color
         return self.current_color

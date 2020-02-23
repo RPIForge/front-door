@@ -31,4 +31,10 @@ from classes.slack import slack_bot
 variable_object.slack_class = slack_bot(variable_object,arguments['slack_token'])
 ##MUST BE LAST AS IT WILL NOT RETURN
 ## SLACK HAS TO BE ON MAIN THREAD UNTIL they fix their stuff
+
+#initalize message handlers
+from utilities.class_helpers.message_handler import message_handler
+variable_object.message_handler = message_handler(variable_object)
+
+
 variable_object.slack_class.start()

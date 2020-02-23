@@ -3,6 +3,7 @@ class variable():
     #util classes
     led_strip = None
     logger_class = None
+    message_handler = None
 
     #thread classes
     calendar_class = None
