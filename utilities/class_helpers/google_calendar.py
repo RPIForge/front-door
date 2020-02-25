@@ -114,3 +114,6 @@ class google_calendar():
 
         #return event times
         return output_events
+
+    def get_current_events(self):
+        return list_events(datetime.now(),datetime.now())
