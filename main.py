@@ -21,8 +21,8 @@ variable_object.led_strip = led(variable_object, arguments['led_level'])
 
 #initalize calendar class
 from classes.calendar import calendar
-#variable_object.calendar_class = calendar(variable_object)
-#variable_object.calendar_class.start()
+variable_object.calendar_class = calendar(variable_object)
+variable_object.calendar_class.start()
 
 
 

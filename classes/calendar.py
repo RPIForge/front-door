@@ -32,8 +32,8 @@ class calendar():
                     if(len(current_events)!=0):
                         self.variable_object.led_strip.set_color('GREEN')
                     else:
-                        self.variable_object.led_strips.set_color('RED')
+                        self.variable_object.led_strip.set_color('RED')
                 except:
-                    self.variable_object.logger_class.logger.error("Unable to read calendar")
+                   self.variable_object.logger_class.logger.error("Unable to read calendar")
 
             sleep(5)

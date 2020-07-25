@@ -1,8 +1,9 @@
 #google calendar imports
 from googleapiclient.discovery import build
 from datetime import datetime, timedelta
+from dateutil.parser import isoparse
 import os
-
+from pytz import timezone
 #
 # CALENDAR FUNCTIONS
 #
@@ -30,11 +31,12 @@ class google_calendar():
 
     #read in google data and format
     def handle_event(self,event_dict):
+    
         #if event is not all day
         if('dateTime' in event_dict['start']):
             output_dict = {
-                'start':datetime.fromisoformat(event_dict['start']['dateTime']).replace(tzinfo=None),
-                'end':datetime.fromisoformat(event_dict['end']['dateTime']).replace(tzinfo=None)
+                'start':isoparse(event_dict['start']['dateTime']).replace(tzinfo=None),
+                'end':isoparse(event_dict['end']['dateTime']).replace(tzinfo=None)
             }
         else:
             output_dict = {
@@ -42,7 +44,11 @@ class google_calendar():
                 'end': datetime.strptime(event_dict['start']['date'],'%Y-%m-%d')
             }
         #get event description
-        output_dict['description'] = event_dict['summary']
+        if('summary' in event_dict):
+            output_dict['description'] = event_dict['summary']
+        else:
+            output_dict['description'] = ""
+           
         return [output_dict]
 
 
@@ -57,7 +63,7 @@ class google_calendar():
         #set time to string
         time_min_str = time_min.isoformat("T") + "Z"
         time_max_str = time_max.isoformat("T") + "Z"
-
+        
         #get the events
         event_list = self.calendar_service.events().list(calendarId=self.calendar_id, singleEvents = True, showDeleted=True, timeMax = time_max_str, timeMin = time_min_str).execute()
 
@@ -116,4 +122,20 @@ class google_calendar():
         return output_events
 
     def get_current_events(self):
-        return list_events(datetime.now(),datetime.now())
+        #get current time and adjust to est from whatever timezone
+        current_time = datetime.now()
+        
+        #get start and end of day
+        start_time = current_time.replace(hour=0, minute=0, second=0, microsecond=0)
+        end_time = current_time.replace(hour=23,minute=59, second=0, microsecond=0)
+        
+        #get list of events for today
+        day_list = self.list_events(start_time,end_time)
+        
+        #find all current events
+        current_events = []
+        for event in day_list:
+            print("START:",event['start'],"CURRENT:",current_time,"END:",event['end'])
+            if(event['start']<current_time and event['end']>current_time):
+                current_events.append(event)
+        return current_events
