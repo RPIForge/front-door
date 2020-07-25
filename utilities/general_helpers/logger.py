@@ -1,6 +1,6 @@
 #Impport to creater log folder if none exists
 import os
-
+import time
 #Import logging classes
 import logging
 from logging.handlers import TimedRotatingFileHandler
@@ -9,7 +9,7 @@ from logging.handlers import TimedRotatingFileHandler
 class logger():
     variable_object = None
     logger = None
-
+    
     def __init__(self, variable):
         #init variable object
         self.variable_object = variable
@@ -18,9 +18,8 @@ class logger():
             os.mkdir("logs")
 
         self.logger = logging.getLogger('general_logger')
-
-
-    def start(self, level):
+      
+    def start(self, level, log_time):
         if(level=="DEBUG"):
             level = logging.DEBUG
         elif(level=="INFO"):
@@ -31,6 +30,15 @@ class logger():
         #Set logger levels
         self.logger.setLevel(level)
 
+        #delete previous logs if they're past a date
+        now = time.time()
+        path = os.getcwd()+"/logs"
+        for f in os.listdir(path):
+            f = os.path.join(path, f)
+            if os.stat(f).st_mtime < now-log_time*86400:
+                if os.path.isfile(f):
+                    os.remove(os.path.join(path, f))
+                    
         # create file handler which logs all messages
         file_handler = TimedRotatingFileHandler('logs/general_logs.log', when="midnight", interval=1)
         file_handler.setLevel(level)

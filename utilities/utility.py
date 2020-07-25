@@ -12,6 +12,7 @@ def handle_arguments():
     log_level = "ERROR"
     led_level = "LIVE"
     slack_token = None
+    log_time = 7
 
     try:
         #handle arguments
@@ -31,18 +32,27 @@ def handle_arguments():
                 led_level = "LIVE"
             elif(sys.argv[arg_number] == '-debug'):
                 led_level = "DEBUG"
-
+            elif(sys.argv[arg_number] == '-t'):
+                skip_next=True
+                log_time = int(sys.argv[arg_number+1])
+                
+                
             else:
                 raise Exception('Invlaid arugments')
     except:
-        print("{} is not a valid arguments. Please check README for valid options".format(sys.argv[arg_number]))
-        raise Exception("Invalid arugments")
+        if(skip_next):
+            print("{} is an incomplete argument. Please check README for valid options".format(sys.argv[arg_number]))
+            raise Exception("Invalid arugments")
+        else:  
+            print("{} is not a valid arguments. Please check README for valid options".format(sys.argv[arg_number]))
+            raise Exception("Invalid arugments")
 
 
     argument_dictionary = {
         'log_level':log_level,
         'led_level':led_level,
-        'slack_token':slack_token
+        'slack_token':slack_token,
+        'log_time':log_time
     }
 
     return argument_dictionary

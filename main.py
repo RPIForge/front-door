@@ -13,7 +13,7 @@ variable_object = variable()
 #initialize logger
 from utilities.general_helpers.logger import logger
 variable_object.logger_class = logger(variable_object)
-variable_object.logger_class.start(arguments['log_level'])
+variable_object.logger_class.start(arguments['log_level'],arguments['log_time'])
 
 #initialize led led_strip
 from utilities.general_helpers.led_strip import led
