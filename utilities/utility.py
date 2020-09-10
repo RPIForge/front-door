@@ -11,7 +11,6 @@ import json
 def handle_arguments():
     log_level = "ERROR"
     led_level = "LIVE"
-    slack_token = None
     log_time = 7
 
     try:
@@ -51,7 +50,6 @@ def handle_arguments():
     argument_dictionary = {
         'log_level':log_level,
         'led_level':led_level,
-        'slack_token':slack_token,
         'log_time':log_time
     }
 
