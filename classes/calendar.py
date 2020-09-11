@@ -26,7 +26,8 @@ class calendar():
     def thread(self):
         #Thread to check the current events
         while(True):
-            if(self.variable_object.calendar_mode =='calendar'):
+            if(self.variable_object.calendar_mode == 'calendar'):
+                print(1)
                 try:
                     current_events = self.google_calendar.get_current_events()
                     if(len(current_events)!=0):

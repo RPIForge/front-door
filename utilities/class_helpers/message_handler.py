@@ -25,7 +25,7 @@ class message_handler:
         return "The Door is currently {}".format(self.variable_object.led_strip.current_color)
 
     def reset_command(self, luis_input,slack_data):
-        self.variable_object.color_mode = "calendar"
+        self.variable_object.calendar_mode = "calendar"
         return "The Door is now based off the calendar"
 
     def ip_command(self, luis_input, slack_data):
