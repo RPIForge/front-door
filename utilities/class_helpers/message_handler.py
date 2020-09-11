@@ -1,3 +1,5 @@
+from utilities import utility
+
 class message_handler:
     variable_object = None
 
@@ -26,7 +28,11 @@ class message_handler:
         self.variable_object.color_mode = "calendar"
         return "The Door is now based off the calendar"
 
-
+    def ip_command(self, luis_input, slack_data):
+        ip = utility.get_ip()
+        return "The Door is located at {}".format(ip)
+        
+        
     def parse_command(self, luis_input,slack_data):
         intent = luis_input['intent']
         try:

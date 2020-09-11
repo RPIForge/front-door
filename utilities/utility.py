@@ -7,6 +7,7 @@ import socket
 import requests
 import json
 
+
 #funtion to handle input arguments
 def handle_arguments():
     log_level = "ERROR"
