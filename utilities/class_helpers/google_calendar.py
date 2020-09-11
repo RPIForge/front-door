@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from dateutil.parser import isoparse
 import os
 from pytz import timezone
+
 #
 # CALENDAR FUNCTIONS
 #
@@ -138,4 +139,5 @@ class google_calendar():
             print("START:",event['start'],"CURRENT:",current_time,"END:",event['end'])
             if(event['start']<current_time and event['end']>current_time):
                 current_events.append(event)
-        return current_events
+        return current_events           
+
