@@ -45,6 +45,9 @@ class led:
             GPIO.setup(self.red_pin, GPIO.OUT)
             GPIO.setup(self.green_pin, GPIO.OUT)
             GPIO.setup(self.blue_pin, GPIO.OUT)
+        
+            self.quick_bump()
+        
         self.logger.info("Initialized LED strip in {} mode".format(self.mode))
     #pin setup
     def set_pin(self,pin,state):
