@@ -136,7 +136,6 @@ class google_calendar():
         #find all current events
         current_events = []
         for event in day_list:
-            print("START:",event['start'],"CURRENT:",current_time,"END:",event['end'])
             if(event['start']<current_time and event['end']>current_time):
                 current_events.append(event)
         return current_events           
