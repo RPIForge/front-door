@@ -44,8 +44,8 @@ class slack_bot:
         try:
             if(not "<@UPENFEMDM>" in  data['text']):
                 return
-            if("GP6M8KPAM"!=data['channel'] and "G7X672W82"!=data['channel']):
-                return
+            #if("GP6M8KPAM"!=data['channel'] and "G7X672W82"!=data['channel']):
+            #    return
         except:
             self.logger.error('Invalid message type [name/location check]')
             return
