@@ -38,7 +38,9 @@ class led:
 
         if(self.mode == "LIVE"):
             import RPi.GPIO as GPIO
-
+            global GPIO
+            RPi = __import__('RPi', globals(), locals()) 
+            GPIO = RPi.GPIO
             GPIO.setmode(GPIO.BOARD)
             GPIO.setup(self.red_pin, GPIO.OUT)
             GPIO.setup(self.green_pin, GPIO.OUT)
