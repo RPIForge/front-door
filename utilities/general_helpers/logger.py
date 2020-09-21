@@ -3,7 +3,6 @@ import os
 import time
 #Import logging classes
 import logging
-from logging.handlers import TimedRotatingFileHandler
 
 
 class logger():
@@ -40,7 +39,7 @@ class logger():
                     os.remove(os.path.join(path, f))
                     
         # create file handler which logs all messages
-        file_handler = TimedRotatingFileHandler('logs/general_logs.log', when="midnight", interval=1)
+        file_handler = logging.FileHandler('logs/general_logs.log')
         file_handler.setLevel(level)
 
         # create console handler with a higher log level
