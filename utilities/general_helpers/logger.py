@@ -39,7 +39,7 @@ class logger():
                     os.remove(os.path.join(path, f))
                     
         # create file handler which logs all messages
-        file_handler = logging.FileHandler('logs/general_logs.log', filemode="a")
+        file_handler = logging.FileHandler('logs/general_logs.log', mode='a')
         file_handler.setLevel(level)
 
         # create console handler with a higher log level
