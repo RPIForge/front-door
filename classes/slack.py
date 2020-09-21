@@ -61,7 +61,7 @@ class slack_bot:
         luis_output = luis_send(incoming_message)
 
         response = self.variable_object.message_handler.parse_command(luis_output,data)
-        formated_response = "TEST <@{}> {}".format(incoming_user,response)
+        formated_response = "<@{}> {}".format(incoming_user,response)
 
         web_client.chat_postMessage(
             channel=channel_id,
