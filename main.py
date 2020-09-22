@@ -37,4 +37,8 @@ variable_object.message_handler = message_handler(variable_object)
 
 ##MUST BE LAST AS IT WILL NOT RETURN
 ## SLACK HAS TO BE ON MAIN THREAD UNTIL they fix their stuff
-variable_object.slack_class.start()
+while(True):
+    try:
+        variable_object.slack_class.start()
+    except:
+        self.variable_object.logger_class.logger.exception("Unable to read calendar")
