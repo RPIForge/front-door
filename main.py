@@ -41,4 +41,4 @@ while(True):
     try:
         variable_object.slack_class.start()
     except:
-        self.variable_object.logger_class.logger.exception("Unable to read calendar")
+        variable_object.logger_class.logger.exception("Unable to read calendar")
